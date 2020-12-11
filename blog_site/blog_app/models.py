@@ -41,6 +41,7 @@ class Posts(models.Model):
     views = models.IntegerField(default=0, verbose_name='Кол-во просмотров')
     category = models.ForeignKey(Categories, on_delete=models.PROTECT, verbose_name='Категория', related_name='posts')
     tags = models.ManyToManyField(Tags, blank=True, verbose_name='Теги', related_name='posts')
+    is_published = models.BooleanField(default=False, verbose_name='Публикация')
 
     def __str__(self):
         return self.title
