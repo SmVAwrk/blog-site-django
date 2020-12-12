@@ -45,7 +45,7 @@ class PostsAdmin(admin.ModelAdmin):
         """Метод для просмотора добавленой фотографии во время редактирования в админке"""
         if obj.photo:
             return mark_safe(f'<img src="{obj.photo.url}" width="300">')
-        return '<->'
+        return '-'
     show_photo.short_description = 'Просмотр фото'
 
     def get_miniature(self, obj):

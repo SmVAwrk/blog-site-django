@@ -49,6 +49,9 @@ class Posts(models.Model):
     tags = models.ManyToManyField(Tags, blank=True, verbose_name='Теги', related_name='posts')
     is_published = models.BooleanField(default=False, verbose_name='Публикация')
 
+    def get_absolute_url(self):
+        return reverse('post', kwargs={'slug': self.slug})
+
     def __str__(self):
         return self.title
 
