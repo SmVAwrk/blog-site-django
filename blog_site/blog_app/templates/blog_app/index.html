@@ -1,48 +1,35 @@
 {% extends 'base.html' %}
 
+{% load featured_post %}
 {% load static %}
 
 {% block title %}{{ title }} | {{ block.super }} {% endblock %}
 
 {% block content %}
+
 <section class="bg-text-area">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="bg-text">
-                    <h3>Classic BLOG Design</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                        voluptate velit esse cillum dolore eu fugiat nulla </p>
+                    <h3>Классический дизайн сайта-блога</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Aliquam consequat accumsan erat, sed imperdiet diam. Vivamus tempor metus vitae est ornare suscipit.
+                        Maecenas eget massa nec nisi ornare suscipit. Cras eget tortor mi.
+                        Etiam at faucibus augue. Cras sem sapien, fringilla ac lacinia ut, lacinia in nibh.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 <section class="blog-post-area">
     <div class="container">
         <div class="row">
             <div class="blog-post-area-style">
-                <div class="col-md-12">
-                    <div class="single-post-big">
-                        <div class="big-image">
-                            <img src="{% static 'img/post-image1.jpg' %}" alt="">
-                        </div>
-                        <div class="big-text">
-                            <h3><a href="#">Post Title Goes Here.</a></h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-                            <h4><span class="date">25 February 2017</span><span class="author">Posted By: <span
-                                    class="author-name">Kabbo Liate</span></span>
-                            </h4>
-                        </div>
-                    </div>
-                </div>
+
+                {% get_main_posts %}
+
                 {% for post in posts %}
                 <div class="col-md-3">
                     <div class="single-post">
@@ -55,7 +42,7 @@
                         <h4><span> Author: <span class="author-name">{{ post.author }}</span></span>
                         </h4>
                         {{ post.content|safe|truncatewords_html:50 }}
-                        <h4><span>{{ post.created_at|date:"H:i d.m.Y" }}</span></h4>
+                        <h4><span>{{ post.created_at|date:" d.m.Y" }}</span></h4>
                     </div>
                 </div>
                 {% endfor %}
@@ -74,4 +61,5 @@
         </div>
     </div>
 </section>
+
 {% endblock %}

@@ -17,14 +17,13 @@ class Home(ListView):
         return context
 
     def get_queryset(self):
-        return Posts.objects.filter(is_published=True)
-        # .select_realted('category', 'tags')
+        return Posts.objects.filter(is_published=True, on_main=False).select_related('category', 'author')
 
 
 class Post(DetailView):
     model = Posts
     template_name = 'blog_app/index.html'
-    context_object_name = 'post'
+    context_object_name = 'post_item'
 
 
 

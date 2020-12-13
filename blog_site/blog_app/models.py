@@ -48,6 +48,7 @@ class Posts(models.Model):
     category = models.ForeignKey(Categories, on_delete=models.PROTECT, verbose_name='Категория', related_name='posts')
     tags = models.ManyToManyField(Tags, blank=True, verbose_name='Теги', related_name='posts')
     is_published = models.BooleanField(default=False, verbose_name='Публикация')
+    on_main = models.BooleanField(default=False, verbose_name='Закрепленно')
 
     def get_absolute_url(self):
         return reverse('post', kwargs={'slug': self.slug})
