@@ -3,9 +3,10 @@
 {% load featured_post %}
 {% load static %}
 
-{% block title %}{{ title }} | {{ block.super }} {% endblock %}
+{% block title %} {{ title }} | {{ block.super }} {% endblock %}
 
 {% block content %}
+
 
 <section class="bg-text-area">
     <div class="container">
@@ -23,18 +24,21 @@
     </div>
 </section>
 
+
 <section class="blog-post-area">
     <div class="container">
         <div class="row">
             <div class="blog-post-area-style">
 
+                {% if page_obj.number == 1 %}
                 {% get_main_posts %}
+                {% endif %}
 
                 {% for post in posts %}
                 <div class="col-md-3">
                     <div class="single-post">
                         {% if post.photo %}
-                        <img src="{{ post.photo.url }}" alt="{{ post.title }}">
+                        <img src="{{ post.photo.url }}" alt="{{ post.title }}" height="195">
                         {% else %}
                         <img src=https://picsum.photos/id/1060/300/201?blur=2" alt="{{ post.title }}">
                         {% endif %}
@@ -49,16 +53,8 @@
             </div>
         </div>
     </div>
-    <div class="pegination">
-
-        <div class="nav-links">
-            <span class="page-numbers current">1</span>
-            <a class="page-numbers" href="#">2</a>
-            <a class="page-numbers" href="#">3</a>
-            <a class="page-numbers" href="#">4</a>
-            <a class="page-numbers" href="#">5</a>
-            <a class="page-numbers" href="#"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-        </div>
+    <div class="single-post">
+    {% include 'inc/_pagination.html' %}
     </div>
 </section>
 
