@@ -36,7 +36,7 @@ class PostsAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'title',)
     search_fields = ('title', 'author',)
     list_editable = ('is_published',)
-    list_filter = ('is_published', 'category', 'on_main',)
+    list_filter = ('is_published', 'category', 'tags', 'on_main',)
     fields = ('title', 'slug', 'author', 'category', 'content', 'photo', 'show_photo',
               'is_published', 'views', 'created_at', 'updated_at', 'tags', 'on_main',)
     readonly_fields = ('show_photo', 'views', 'created_at', 'updated_at',)
