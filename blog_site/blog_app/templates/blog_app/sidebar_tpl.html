@@ -1,0 +1,38 @@
+<h2 class="sidebar-title">Последние посты</h2>
+<div class="grid">
+    {% for res_p in recent %}
+    <div class="portfolio-item recent">
+        {% if res_p.photo %}
+        <img src="{{ res_p.photo.url }}" alt="{{ res_p.title }}">
+        {% else %}
+        <img src="https://picsum.photos/id/1060/100/50?blur=2" alt="{{ res_p.title }}">
+        {% endif %}
+        <div class="portfolio-text">
+            <h5><a href="{{ res_p.get_absolute_url }}">{{ res_p.title }}</a></h5>
+            <p>{{ res_p.author }}<span>|</span>{{ res_p.created_at|date:'d.m.Y' }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<h2 class="sidebar-title">Популярные посты</h2>
+<div class="grid">
+    {% for pop_p in popular %}
+    <div class="portfolio-item popular">
+        {% if pop_p.photo %}
+        <img src="{{ pop_p.photo.url }}" alt="{{ pop_p.title }}">
+        {% else %}
+        <img src="https://picsum.photos/id/1060/100/50?blur=2" alt="{{pop_p.title}}">
+        {% endif %}
+        <div class="portfolio-text">
+            <h5><a href="{{ pop_p.get_absolute_url }}">{{ pop_p.title }}</a></h5>
+            <p>{{ pop_p.author }}<span>|</span>{{ pop_p.created_at|date:'d.m.Y' }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="tags">
+    <h2 class="sidebar-title">Теги</h2>
+    {% for t in tags %}
+    <p><a href="{{ t.get_absolute_url }}">{{ t.title }}</a></p>
+    {% endfor %}
+</div>
