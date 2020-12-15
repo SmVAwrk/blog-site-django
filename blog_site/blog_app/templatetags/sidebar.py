@@ -8,8 +8,8 @@ register = template.Library()
 
 @register.inclusion_tag('blog_app/sidebar_tpl.html')
 def get_sidebar_data(cnt=3):
-    recent = Posts.objects.filter(is_published=True).order_by('-created_at')[:cnt]
-    popular = Posts.objects.filter(is_published=True).order_by('-views')[:cnt]
+    recent = Posts.objects.filter(is_published=True).order_by('-created_at')[:cnt].select_related('author')
+    popular = Posts.objects.filter(is_published=True).order_by('-views')[:cnt].select_related('author')
     tags = Tags.objects.annotate(sum=Sum('posts__views')).order_by('-sum')
     return {'recent': recent, 'popular': popular, 'tags': tags}
 

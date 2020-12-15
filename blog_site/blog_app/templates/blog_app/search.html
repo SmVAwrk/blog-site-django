@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 
-{% load featured_post %}
 {% load static %}
 
 {% block title %} {{ title }} | {{ block.super }} {% endblock %}
@@ -8,31 +7,11 @@
 {% block content %}
 
 
-<section class="bg-text-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="bg-text">
-                    <h3>Классический дизайн сайта-блога</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Aliquam consequat accumsan erat, sed imperdiet diam. Vivamus tempor metus vitae est ornare suscipit.
-                        Maecenas eget massa nec nisi ornare suscipit. Cras eget tortor mi.
-                        Etiam at faucibus augue. Cras sem sapien, fringilla ac lacinia ut, lacinia in nibh.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
 <section class="blog-post-area">
     <div class="container">
+        <div class="border-top" style="border-top: 1px solid#40c4ff"></div>
         <div class="row">
             <div class="blog-post-area-style">
-
-                {% if page_obj.number == 1 %}
-                {% get_main_posts %}
-                {% endif %}
 
                 {% for post in posts %}
                 <div class="col-md-3">
@@ -49,6 +28,8 @@
                         <h4><span>{{ post.created_at|date:" d.m.Y" }}</span></h4>
                     </div>
                 </div>
+                {% empty %}
+                <h2>Поиск не дал результатов</h2>
                 {% endfor %}
             </div>
         </div>

@@ -7,6 +7,6 @@ register = template.Library()
 
 @register.inclusion_tag('blog_app/featured_post_tpl.html')
 def get_main_posts():
-    main_posts = Posts.objects.filter(is_published=True, on_main=True)
+    main_posts = Posts.objects.filter(is_published=True, on_main=True).select_related('author')
     return {'main_posts': main_posts}
 

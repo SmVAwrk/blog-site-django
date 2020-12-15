@@ -1,4 +1,4 @@
-from django.db.models import F
+from django.db.models import F, Q
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
@@ -18,7 +18,7 @@ class Home(ListView):
         return context
 
     def get_queryset(self):
-        return Posts.objects.filter(is_published=True, on_main=False).select_related('category', 'author')
+        return Posts.objects.filter(is_published=True, on_main=False).select_related('author')
 
 
 class PostsByCategory(ListView):
@@ -34,8 +34,7 @@ class PostsByCategory(ListView):
         return context
 
     def get_queryset(self):
-        return Posts.objects.filter(is_published=True, category__slug=self.kwargs['slug']).select_related('category',
-                                                                                                          'author')
+        return Posts.objects.filter(is_published=True, category__slug=self.kwargs['slug']).select_related('author')
 
 
 class PostsByTag(ListView):
@@ -50,8 +49,7 @@ class PostsByTag(ListView):
         return context
 
     def get_queryset(self):
-        return Posts.objects.filter(is_published=True, tags__slug=self.kwargs['slug']).select_related('category',
-                                                                                                      'author')
+        return Posts.objects.filter(is_published=True, tags__slug=self.kwargs['slug']).select_related('author')
 
 
 class Post(DetailView):
@@ -65,5 +63,21 @@ class Post(DetailView):
         self.object.views = F('views') + 1
         self.object.save()
         self.object.refresh_from_db()
+        return context
+
+
+class Search(ListView):
+    template_name = 'blog_app/search.html'
+    context_object_name = 'posts'
+    paginate_by = 4
+
+    def get_queryset(self):
+        return Posts.objects.filter(Q(title__icontains=self.request.GET.get("s")) |
+                                    Q(content__icontains=self.request.GET.get("s"))).select_related('author')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'Поиск по "{self.request.GET.get("s")}"'
+        context['s'] = f's={self.request.GET.get("s")}&'
         return context
 

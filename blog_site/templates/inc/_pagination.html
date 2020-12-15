@@ -4,12 +4,12 @@
             {% if page_obj.has_previous %}
 
             {% if page_obj.number|add:'-3' > 0 %}
-            <a class="page-numbers" href="?page={{ page_obj.paginator.page_range|first }}">
+            <a class="page-numbers" href="?{{ s }}page={{ page_obj.paginator.page_range|first }}">
                 <i class="fa fa-angle-double-left" aria-hidden="true"></i>
             </a>
             {% endif %}
 
-            <a class="page-numbers" href="?page={{ page_obj.previous_page_number }}">
+            <a class="page-numbers" href="?{{ s }}page={{ page_obj.previous_page_number }}">
                 <i class="fa fa-angle-left" aria-hidden="true"></i>
             </a>
             {% endif %}
@@ -20,7 +20,7 @@
             <span class="page-numbers current">{{ p }}</span>
 
             {% elif p > page_obj.number|add:'-3' and p < page_obj.number|add:'3' %}
-            <a class="page-numbers" href="?page={{ p }}">{{ p }}</a>
+            <a class="page-numbers" href="?{{ s }}page={{ p }}">{{ p }}</a>
 
             {% endif %}
 
@@ -28,12 +28,12 @@
 
             {% if page_obj.has_next %}
 
-            <a class="page-numbers" href="?page={{ page_obj.next_page_number }}">
+            <a class="page-numbers" href="?{{ s }}page={{ page_obj.next_page_number }}">
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
             </a>
 
             {% if page_obj.number|add:'2' < page_obj.paginator.num_pages %}
-            <a class="page-numbers" href="?page={{ page_obj.paginator.page_range|last }}">
+            <a class="page-numbers" href="?{{ s }}page={{ page_obj.paginator.page_range|last }}">
                 <i class="fa fa-angle-double-right" aria-hidden="true"></i>
             </a>
             {% endif %}
