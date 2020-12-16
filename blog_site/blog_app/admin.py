@@ -31,13 +31,14 @@ class PostsAdminForm(forms.ModelForm):
 class PostsAdmin(admin.ModelAdmin):
     form = PostsAdminForm
     save_as = True
+
     prepopulated_fields = {'slug': ('title',)}
     list_display = ('id', 'title', 'author', 'category', 'created_at', 'updated_at', 'is_published', 'get_miniature')
     list_display_links = ('id', 'title',)
     search_fields = ('title', 'author',)
     list_editable = ('is_published',)
     list_filter = ('is_published', 'category', 'tags', 'on_main',)
-    fields = ('title', 'slug', 'author', 'category', 'content', 'photo', 'show_photo',
+    fields = ('title', 'slug', 'category', 'content', 'photo', 'show_photo',
               'is_published', 'views', 'created_at', 'updated_at', 'tags', 'on_main',)
     readonly_fields = ('show_photo', 'views', 'created_at', 'updated_at',)
 
@@ -54,6 +55,12 @@ class PostsAdmin(admin.ModelAdmin):
             return mark_safe(f'<img src="{obj.photo.url}" width="50">')
         return '<Фото отсутствует>'
     get_miniature.short_description = 'Миниатюра'
+
+    def save_model(self, request, obj, form, change):
+        """Добавление юзера как автора к создаваемому посту"""
+        if not obj.pk:
+            obj.author = request.user
+        super().save_model(request, obj, form, change)
 
 
 admin.site.register(Categories, CategoriesAdmin)
