@@ -1,7 +1,12 @@
+from django.contrib import messages
+from django.contrib.auth import login, logout
+from django.contrib.auth.forms import UserCreationForm
 from django.db.models import F, Q
+from django import forms
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
+from .forms import *
 
 from blog_app.models import *
 
@@ -80,4 +85,42 @@ class Search(ListView):
         context['title'] = f'Поиск по "{self.request.GET.get("s")}"'
         context['s'] = f's={self.request.GET.get("s")}&'
         return context
+
+
+def registration(request):
+    title = 'Регистрация'
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, 'Регистрация прошла успешно!')
+            return redirect('home')
+        messages.error(request, 'При регистрации произошла ошибка.')
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'blog_app/registration.html', {'form': form, 'title': title})
+
+
+def user_login(request):
+    title = 'Вход'
+    if request.method == 'POST':
+        form = UserLoginForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('home')
+        messages.error(request, 'Не удалось войти в аккакунт.')
+    else:
+        form = UserLoginForm()
+    return render(request, 'blog_app/registration.html', {'form': form, 'title': title})
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('login')
+
+
+
+
 

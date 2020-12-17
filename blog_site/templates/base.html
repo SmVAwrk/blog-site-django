@@ -22,9 +22,21 @@
 <body>
 <div class="wrapper">
 
-    {% cache 60 header %}
     {% include 'inc/_header.html' %}
-    {% endcache %}
+
+    {% if messages %}
+    {% for m in messages %}
+    {% if m.tags == 'error' %}
+    <div class="alert alert-danger" role="alert">
+        {{ m }}
+    </div>
+    {% else %}
+    <div class="alert alert-{{ message.tags }}" role="alert">
+        {{ m }}
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
 
     {% block content %}{% endblock %}
 

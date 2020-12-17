@@ -11,6 +11,16 @@
             <div class="col-md-10">
                 {% show_menu %}
             </div>
+            <div class="menu">
+                <ul>
+                    {% if request.user.is_authenticated %}
+                    <li>Добро пожаловать, {{ user.username }} | <a href="{% url 'logout' %}">Выход</a></li>
+                    {% else %}
+                    <li><a href="{% url 'reg' %}">Регистрация</a></li>
+                    <li><a href="{% url 'login' %}">Войти</a></li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
     </div>
 </header>

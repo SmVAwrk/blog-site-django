@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} {{ title }} | {{ block.super }} {% endblock %}
+
+{% block content %}
+
+
+<section class="blog-post-area">
+    <div class="container">
+        <div class="border-top" style="border-top: 1px solid#40c4ff"></div>
+        <h2>{{ title }}</h2>
+        <div class="row">
+            <div class="blog-post-area-style">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                <button type="submit" class="btn btn-primary btn-block">{{ title }}</button>
+                </form>
+                <p></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
