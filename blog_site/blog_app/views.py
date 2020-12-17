@@ -121,6 +121,23 @@ def user_logout(request):
     return redirect('login')
 
 
+def add_post(request):
+    title = 'Добавление записи'
+    if request.method == 'POST':
+        form = AddPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_post = form.save(commit=False)
+            new_post.author = request.user
+            new_post.slug = slugify(new_post.title)
+            new_post.save()
+            messages.success(request, 'Ваш пост был успешно добавлен!')
+            return redirect('home')
+        messages.error(request, 'Не удалось добавить пост.')
+    else:
+        form = AddPostForm()
+    return render(request, 'blog_app/add_post.html', {'title': title, 'form': form})
+
+
 
 
 

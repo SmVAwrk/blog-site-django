@@ -1,6 +1,10 @@
+import re
+
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django import forms
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 from blog_app.models import Posts
 
@@ -22,5 +26,25 @@ class UserLoginForm(AuthenticationForm):
                                widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
+
+class AddPostForm(forms.ModelForm):
+
+    class Meta:
+        model = Posts
+        fields = ['title', 'content', 'photo', 'category', 'is_published']
+        attrs = {'class': 'form-control'}
+        widgets = {
+            'title': forms.TextInput(attrs=attrs),
+            'content': CKEditorUploadingWidget(),
+            'photo': forms.FileInput(attrs=attrs),
+            'category': forms.Select(attrs=attrs),
+        }
+
+    def clean_title(self):
+        """Валидатор для проверки названия новости"""
+        title = self.cleaned_data['title']
+        if re.match(r'\d', title):
+            raise ValidationError('Название не должно начинаться с цифры.')
+        return title
 
 

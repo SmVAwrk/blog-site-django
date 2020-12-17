@@ -26,8 +26,8 @@
                                     {% endfor %}
                                 </span>
                                 <br>
-                                <span>Просмотры: {{ post_item.views }}</span>
                                 {% endif %}
+                                <span>Просмотры: {{ post_item.views }}</span>
                                 {% if post_item.photo %}
                                 <img src="{{ post_item.photo.url }}" alt="{{ post_item.title }}">
                                 {% else %}

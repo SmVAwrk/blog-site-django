@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
+from slugify import slugify
 
 
 class Categories(models.Model):
@@ -41,8 +42,8 @@ class Tags(models.Model):
 class Posts(models.Model):
     """Модель постов"""
     title = models.CharField(max_length=255, verbose_name='Название')
-    slug = models.SlugField(max_length=255, verbose_name='URL', unique=True)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, verbose_name='Автор')
+    slug = models.SlugField(max_length=255, verbose_name='URL', unique=True, null=True)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, verbose_name='Автор', null=True)
     content = models.TextField(blank=True, verbose_name='Контент поста')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
