@@ -63,9 +63,19 @@ class PostsAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
 
+class AdminComments(admin.ModelAdmin):
+    list_display = ('id', '__str__', 'post', 'author', 'created_at',)
+    list_display_links = ('id', '__str__',)
+    search_fields = ('__str__', 'author',)
+    list_filter = ('post', 'author',)
+    fields = ('content', 'post', 'author',)
+    readonly_fields = ('post', 'author',)
+
+
 admin.site.register(Categories, CategoriesAdmin)
 admin.site.register(Tags, TagsAdmin)
 admin.site.register(Posts, PostsAdmin)
+admin.site.register(Comments, AdminComments)
 
 
 

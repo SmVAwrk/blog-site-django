@@ -57,7 +57,7 @@ class PostsByTag(ListView):
         return Posts.objects.filter(is_published=True, tags__slug=self.kwargs['slug']).select_related('author')
 
 
-class Post(DetailView):
+class GetPost(DetailView):
     model = Posts
     template_name = 'blog_app/single.html'
     context_object_name = 'post_item'
@@ -68,7 +68,23 @@ class Post(DetailView):
         self.object.views = F('views') + 1
         self.object.save()
         self.object.refresh_from_db()
+        context['form'] = AddCommentForm()
+        context['comments'] = Comments.objects.filter(post=self.object.pk).select_related('author')
         return context
+
+    def post(self, request, *args, **kwargs):
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.author = request.user
+            new_comment.post = self.get_object()
+            new_comment.save()
+            messages.success(request, 'Ваш комментарий успешно добавлен!')
+            return redirect('post', self.kwargs['slug'])
+        self.object = self.get_object()
+        context = self.get_context_data(**kwargs)
+        messages.error(request, 'Не удалось добавить комментарий.')
+        return render(request, self.template_name, context)
 
 
 class Search(ListView):
@@ -136,8 +152,5 @@ def add_post(request):
     else:
         form = AddPostForm()
     return render(request, 'blog_app/add_post.html', {'title': title, 'form': form})
-
-
-
 
 

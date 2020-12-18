@@ -6,7 +6,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from blog_app.models import Posts
+from blog_app.models import Posts, Comments
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -47,4 +47,18 @@ class AddPostForm(forms.ModelForm):
             raise ValidationError('Название не должно начинаться с цифры.')
         return title
 
+
+class AddCommentForm(forms.ModelForm):
+
+    class Meta:
+        model = Comments
+        fields = ['content', ]
+        widgets = {'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 5})}
+
+    def clean_content(self):
+        """Валидатор для проверки комментария"""
+        content = self.cleaned_data['content']
+        if re.match(r'\d', content):
+            raise ValidationError('Комментарий не должен начинаться с цифры.')
+        return content
 

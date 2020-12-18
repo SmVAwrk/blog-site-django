@@ -2,6 +2,8 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
+from mptt.fields import TreeForeignKey
+from mptt.models import MPTTModel
 from slugify import slugify
 
 
@@ -64,4 +66,21 @@ class Posts(models.Model):
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
         ordering = ['-created_at', ]
+
+
+class Comments(models.Model):
+    """Модель комментариев к постам"""
+    post = models.ForeignKey(Posts, on_delete=models.PROTECT, verbose_name='Пост')
+    content = models.TextField(blank='True', verbose_name='Текст')
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, verbose_name='Автор')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+
+    def __str__(self):
+        return self.content[:100]
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+        ordering = ['-created_at', ]
+
 

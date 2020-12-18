@@ -1,0 +1,37 @@
+{% if request.user.is_authenticated %}
+<br>
+<h4>Добавить комментарий</h4>
+<form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-block">Отправить</button>
+</form>
+{% else %}
+<br>
+<h4>Чтобы оставлять комментарии надо авторизоваться</h4>
+<br>
+{% endif %}
+<div class="commententries">
+    <h3>Комментарии</h3>
+    <ul class="commentlist">
+        <li>
+            {% for comment in comments %}
+            <article class="comment">
+                <section class="comment-details">
+                    <div class="author-name">
+                        <h5><a href="#">{{ comment.author }}</a></h5>
+                        <p>{{ comment.created_at|date:'H:i d.m.Y' }}</p>
+                    </div>
+                    <div class="comment-body">
+                        <p>{{ comment.content|safe }}</p>
+                    </div>
+                </section>
+            </article>
+            {% empty %}
+            <h4>Комментарии отсутствуют</h4>
+            {% endfor %}
+        </li>
+
+    </ul>
+
+</div>
