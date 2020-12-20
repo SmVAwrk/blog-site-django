@@ -55,10 +55,4 @@ class AddCommentForm(forms.ModelForm):
         fields = ['content', ]
         widgets = {'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 5})}
 
-    def clean_content(self):
-        """Валидатор для проверки комментария"""
-        content = self.cleaned_data['content']
-        if re.match(r'\d', content):
-            raise ValidationError('Комментарий не должен начинаться с цифры.')
-        return content
 

@@ -12,7 +12,6 @@ from blog_app.models import *
 
 
 class Home(ListView):
-    model = Posts
     template_name = 'blog_app/index.html'
     context_object_name = 'posts'
     paginate_by = 4
@@ -27,7 +26,6 @@ class Home(ListView):
 
 
 class PostsByCategory(ListView):
-    model = Posts
     template_name = 'blog_app/category.html'
     context_object_name = 'posts'
     paginate_by = 4
@@ -35,7 +33,7 @@ class PostsByCategory(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = Categories.objects.get(slug=self.kwargs['slug'])
+        context['title'] = Categories.objects.get(slug=self.kwargs['slug']).title
         return context
 
     def get_queryset(self):
@@ -104,6 +102,9 @@ class Search(ListView):
 
 
 def registration(request):
+    if request.user.is_authenticated:
+        messages.info(request, 'Вы уже зарегистрированы.')
+        return redirect('home')
     title = 'Регистрация'
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
@@ -119,6 +120,9 @@ def registration(request):
 
 
 def user_login(request):
+    if request.user.is_authenticated:
+        messages.info(request, 'Вы уже авторизованы.')
+        return redirect('home')
     title = 'Вход'
     if request.method == 'POST':
         form = UserLoginForm(data=request.POST)
@@ -138,6 +142,8 @@ def user_logout(request):
 
 
 def add_post(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
     title = 'Добавление записи'
     if request.method == 'POST':
         form = AddPostForm(request.POST, request.FILES)
