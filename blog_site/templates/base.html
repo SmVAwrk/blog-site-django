@@ -25,7 +25,9 @@
     {% include 'inc/_header.html' %}
 
     {% if messages %}
+
     {% for m in messages %}
+
     {% if m.tags == 'error' %}
     <div class="alert alert-danger" role="alert">
         {{ m }}
@@ -35,7 +37,9 @@
         {{ m }}
     </div>
     {% endif %}
+
     {% endfor %}
+
     {% endif %}
 
     {% block content %}{% endblock %}
@@ -43,6 +47,7 @@
     {% cache 60 footer %}
     {% include 'inc/_footer.html' %}
     {% endcache %}
+
 </div>
 
 <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>

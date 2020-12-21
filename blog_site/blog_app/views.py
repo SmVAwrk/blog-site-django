@@ -1,17 +1,20 @@
 from django.contrib import messages
 from django.contrib.auth import login, logout
-from django.contrib.auth.forms import UserCreationForm
 from django.db.models import F, Q
-from django import forms
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
+from slugify import slugify
+
 from .forms import *
 
 from blog_app.models import *
 
 
 class Home(ListView):
+    """
+    Представление-класс для главной страницы.
+    Передает только опубликованные и незакрепленные посты, а также название страницы.
+    """
     template_name = 'blog_app/index.html'
     context_object_name = 'posts'
     paginate_by = 4
@@ -26,6 +29,11 @@ class Home(ListView):
 
 
 class PostsByCategory(ListView):
+    """
+    Представление-класс для просмотра постов определенной категории.
+    Передает опубликованные посты из данной категории,
+    а также название страницы, как название категории.
+    """
     template_name = 'blog_app/category.html'
     context_object_name = 'posts'
     paginate_by = 4
@@ -41,6 +49,10 @@ class PostsByCategory(ListView):
 
 
 class PostsByTag(ListView):
+    """
+    Представление-класс для просмотра постов, связанных с определенным тегом.
+    Передает опубликованные посты с данным тегом, а также название страницы, как название тега.
+    """
     template_name = 'blog_app/category.html'
     context_object_name = 'posts'
     paginate_by = 4
@@ -56,12 +68,13 @@ class PostsByTag(ListView):
 
 
 class GetPost(DetailView):
+    """Представление-класс для просмотра конкретного поста."""
     model = Posts
     template_name = 'blog_app/single.html'
     context_object_name = 'post_item'
 
     def get_context_data(self, **kwargs):
-        """Увеличение кол-ва просмотров"""
+        """Метод добавления формы и комментариев к контексту, а также увеличения кол-ва просмотров."""
         context = super().get_context_data(**kwargs)
         self.object.views = F('views') + 1
         self.object.save()
@@ -71,6 +84,10 @@ class GetPost(DetailView):
         return context
 
     def post(self, request, *args, **kwargs):
+        """
+        Метод для обработки формы комментариев.
+        При добавление комментария полю author присваивается user запроса.
+        """
         form = AddCommentForm(request.POST)
         if form.is_valid():
             new_comment = form.save(commit=False)
@@ -86,13 +103,21 @@ class GetPost(DetailView):
 
 
 class Search(ListView):
+    """
+    Представление-класс для просмотра постов которые ищет пользователь.
+    Передает опубликованные посты, у которых в названии или контенте содержится введенная пользователем строка.
+    Также передает саму введенную строку и название страницы.
+    """
     template_name = 'blog_app/search.html'
     context_object_name = 'posts'
     paginate_by = 4
 
     def get_queryset(self):
-        return Posts.objects.filter(Q(title__icontains=self.request.GET.get("s")) |
-                                    Q(content__icontains=self.request.GET.get("s"))).select_related('author')
+        return Posts.objects.filter(
+            Q(is_published=True) &
+            (Q(title__icontains=self.request.GET.get("s")) |
+             Q(content__icontains=self.request.GET.get("s")))
+        ).select_related('author')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -102,6 +127,11 @@ class Search(ListView):
 
 
 def registration(request):
+    """
+    Представление-функция для регистрации пользователей на сайте.
+    Передает и обрабатывает форму регистрации.
+    Также передает название страницы.
+    """
     if request.user.is_authenticated:
         messages.info(request, 'Вы уже зарегистрированы.')
         return redirect('home')
@@ -120,6 +150,11 @@ def registration(request):
 
 
 def user_login(request):
+    """
+    Представление-функция для авторизации пользователей на сайте.
+    Передает и обрабатывает форму авторизации.
+    Также передает название страницы.
+    """
     if request.user.is_authenticated:
         messages.info(request, 'Вы уже авторизованы.')
         return redirect('home')
@@ -137,11 +172,20 @@ def user_login(request):
 
 
 def user_logout(request):
+    """Представление-функция для деавторизации пользователей на сайте."""
     logout(request)
     return redirect('login')
 
 
 def add_post(request):
+    """
+    Представление-функция для добавления поста на сайте.
+    Передает и обрабатывает форму добавления поста.
+    При добавление поста:
+    полю author присваивается user запроса,
+    поле slug автоматически создается на основе поля title.
+    Также передает название страницы.
+    """
     if not request.user.is_authenticated:
         return redirect('login')
     title = 'Добавление записи'

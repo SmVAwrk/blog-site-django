@@ -1,10 +1,6 @@
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
-from mptt.fields import TreeForeignKey
-from mptt.models import MPTTModel
-from slugify import slugify
 
 
 class Categories(models.Model):

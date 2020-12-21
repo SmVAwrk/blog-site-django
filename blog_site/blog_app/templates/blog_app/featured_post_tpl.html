@@ -1,14 +1,15 @@
 {% for post in main_posts %}
-
 <div class="col-md-12">
     <p>
     <div class="single-post-big">
         <div class="big-image">
+
             {% if post.photo %}
             <img src="{{ post.photo.url }}" alt="{{ post.title }}">
             {% else %}
             <img src=https://picsum.photos/id/1060/300/201?blur=2" alt="{{ post.title }}">
             {% endif %}
+
         </div>
         <div class="big-text">
             <h3><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
@@ -20,5 +21,4 @@
     </div>
     </p>
 </div>
-
 {% endfor %}

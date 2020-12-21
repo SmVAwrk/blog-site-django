@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
-
 {% block title %}
 {{ post_item.title }} | {{ block.super }}
 {% endblock %}
 
 {% block content %}
+
 <section class="single-blog-area">
     <div class="container">
         <div class="row">
@@ -20,28 +20,38 @@
                                     <a href="{{ post_item.category.get_absolute_url }}">{{ post_item.category }}</a>
                                 </h4>
                                 <br>
+
                                 {% if post_item.tags.exists %}
                                 <span>Теги:
+
                                     {% for t in post_item.tags.all %}
                                     <a href="{{ t.get_absolute_url }}">{{ t.title }}</a>
                                     {% endfor %}
+
                                 </span>
                                 <br>
                                 {% endif %}
+
                                 <span>Просмотры: {{ post_item.views }}</span>
+
                                 {% if post_item.photo %}
                                 <img src="{{ post_item.photo.url }}" alt="{{ post_item.title }}">
                                 {% else %}
                                 <img src="https://picsum.photos/id/1060/1600/900?blur=2" alt="{{ post_item.title }}">
                                 {% endif %}
+
                                 <div class="single-content">
                                     {{ post_item.content|safe }}
                                 </div>
                             </div>
+
                             {% include 'inc/_comments.html' %}
+
                         </div>
                     </div>
+
                  {% include 'inc/_sidebar.html' %}
+
                 </div>
             </div>
         </div>

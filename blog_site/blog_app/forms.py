@@ -10,6 +10,7 @@ from blog_app.models import Posts, Comments
 
 
 class UserRegistrationForm(UserCreationForm):
+    """Форма регистрации пользователей на сайте в модель User"""
     username = forms.CharField(label='Имя пользователя', help_text='Не более 150 символов',
                                widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(label='E-mail', widget=forms.EmailInput(attrs={'class': 'form-control'}))
@@ -22,13 +23,17 @@ class UserRegistrationForm(UserCreationForm):
 
 
 class UserLoginForm(AuthenticationForm):
+    """Форма для входа пользователей"""
     username = forms.CharField(label='Имя пользователя',
                                widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
 
 class AddPostForm(forms.ModelForm):
-
+    """
+    Форма, связанная с моделью, для добавления поста на сайт.
+    Через виджеты к полю контент подключен CKEditor
+    """
     class Meta:
         model = Posts
         fields = ['title', 'content', 'photo', 'category', 'is_published']
@@ -41,7 +46,7 @@ class AddPostForm(forms.ModelForm):
         }
 
     def clean_title(self):
-        """Валидатор для проверки названия новости"""
+        """Кастомный валидатор для проверки названия новости"""
         title = self.cleaned_data['title']
         if re.match(r'\d', title):
             raise ValidationError('Название не должно начинаться с цифры.')
@@ -49,7 +54,7 @@ class AddPostForm(forms.ModelForm):
 
 
 class AddCommentForm(forms.ModelForm):
-
+    """Форма для добавления комментария к посту"""
     class Meta:
         model = Comments
         fields = ['content', ]

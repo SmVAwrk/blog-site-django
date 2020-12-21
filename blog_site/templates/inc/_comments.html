@@ -11,10 +11,12 @@
 <h4>Чтобы оставлять комментарии надо авторизоваться</h4>
 <br>
 {% endif %}
+
 <div class="commententries">
     <h3>Комментарии</h3>
     <ul class="commentlist">
         <li>
+
             {% for comment in comments %}
             <article class="comment">
                 <section class="comment-details">
@@ -30,8 +32,7 @@
             {% empty %}
             <h4>Комментарии отсутствуют</h4>
             {% endfor %}
+
         </li>
-
     </ul>
-
 </div>

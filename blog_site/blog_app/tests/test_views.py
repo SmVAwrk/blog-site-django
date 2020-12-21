@@ -1,9 +1,6 @@
-from pprint import pprint
-
-from django.contrib import messages
+from django.contrib.auth.models import User
 from django.test import TestCase, Client
 
-from blog_app.forms import AddCommentForm
 from blog_app.models import *
 
 
@@ -221,26 +218,6 @@ class RegistrationFunctionView(BaseViewTest):
         self.assertEquals(response.context['title'], 'Регистрация')
         self.assertTrue(response.context['form'])
 
-    # def test_view_post_method(self):
-    #     context_not_valid = {
-    #         'form.username': 'test_user_2',
-    #         'form.email': 'test_user@test.com',
-    #         'form.password1': 'Pass1',
-    #         'form.password2': 'Pass2',
-    #     }
-    #     response_not_valid = self.client.post(reverse('reg'), context_not_valid)
-    #     self.assertEquals(response_not_valid.status_code, 200)
-    #
-    #     context_valid = {
-    #         'form.username': 'test_user_2',
-    #         'form.email': 'test_user@test.com',
-    #         'form.password1': 'Exs4Lyyf7Ad3aeD',
-    #         'form.password2': 'Exs4Lyyf7Ad3aeD',
-    #     }
-    #     response_valid = self.client.post(reverse('reg'), context_valid)
-    #
-    #     self.assertRedirects(response_valid, reverse('home'))
-
 
 class LoginFunctionView(BaseViewTest):
 
@@ -261,23 +238,6 @@ class LoginFunctionView(BaseViewTest):
         self.assertEquals(response.status_code, 200)
         self.assertEquals(response.context['title'], 'Вход')
         self.assertTrue(response.context['form'])
-
-    # def test_view_post_method(self):
-        # context_not_valid = {
-        #     'form.username': 'not_test_user',
-        #     'form.password': 'test_password',
-        # }
-        # response_not_valid = self.client.post(reverse('reg'), context_not_valid)
-        # self.assertEquals(response_not_valid.status_code, 200)
-
-        # context_valid = {
-        #     'form.username': 'test_user',
-        #     'form.password': 'test_password',
-        # }
-        # response_valid = self.client.post(reverse('login'), context_valid)
-        #
-        # pprint(response_valid.method)
-        # self.assertRedirects(response_valid, reverse('home'))
 
 
 class AddPostFunctionViewTest(BaseViewTest):
@@ -306,17 +266,4 @@ class AddPostFunctionViewTest(BaseViewTest):
         self.assertEquals(response.status_code, 200)
         self.assertEquals(response.context['title'], 'Добавление записи')
         self.assertTrue(response.context['form'])
-
-    # def test_view_post_method(self):
-        # self.client.login(username='test_user', password='test_password')
-        #
-        # context_valid = {
-        #     'form.title': 'test_user',
-        #     'form.content': 'test_password',
-        #     'form.category': self.category,
-        #     'form.is_published': True
-        # }
-        # response_valid = self.client.post(reverse('add_post'), context_valid)
-        #
-        # self.assertRedirects(response_valid, reverse('home'))
 

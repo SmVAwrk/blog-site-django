@@ -3,7 +3,9 @@
         <div class="nav-links">
             {% if page_obj.has_previous %}
 
-            {% if page_obj.number|add:'-3' > 0 %}
+            {% if page_obj.number|add:'-2' > 1 %}
+            <!-- Для отображения стрелки перехода к первой странице,
+            если интервал от первой страницы до текущей больше 2 -->
             <a class="page-numbers" href="?{{ s }}page={{ page_obj.paginator.page_range|first }}">
                 <i class="fa fa-angle-double-left" aria-hidden="true"></i>
             </a>
@@ -18,21 +20,21 @@
 
             {% if page_obj.number == p %}
             <span class="page-numbers current">{{ p }}</span>
-
             {% elif p > page_obj.number|add:'-3' and p < page_obj.number|add:'3' %}
+            <!-- Условие для вывода только двух следующих и двух предыдущих страниц от текущей  -->
             <a class="page-numbers" href="?{{ s }}page={{ p }}">{{ p }}</a>
-
             {% endif %}
 
             {% endfor %}
 
             {% if page_obj.has_next %}
-
             <a class="page-numbers" href="?{{ s }}page={{ page_obj.next_page_number }}">
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
             </a>
 
             {% if page_obj.number|add:'2' < page_obj.paginator.num_pages %}
+            <!-- Для отображения стрелки перехода к последней странице,
+             если интервал от текущей страницы до последней больше 2 -->
             <a class="page-numbers" href="?{{ s }}page={{ page_obj.paginator.page_range|last }}">
                 <i class="fa fa-angle-double-right" aria-hidden="true"></i>
             </a>
@@ -42,5 +44,4 @@
 
         </div>
     </div>
-
 {% endif %}
