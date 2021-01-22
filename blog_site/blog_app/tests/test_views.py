@@ -156,7 +156,7 @@ class GetPostDetailViewTest(BaseViewTest):
     def test_view_post_method(self):
         self.client.login(username='test_user', password='test_password')
         response_1 = self.client.post(reverse('post', kwargs={'slug': self.post.slug}),
-                                   {'form.content': 'Comment from test_user'})
+                                      {'form.content': 'Comment from test_user'})
         self.assertRedirects(response_1, reverse('post', kwargs={'slug': self.post.slug}))
 
         response_2 = self.client.get(reverse('post', kwargs={'slug': self.post.slug}))

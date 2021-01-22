@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'ckeditor',
     'ckeditor_uploader',
-    'mptt',
     'blog_app.apps.BlogAppConfig',
 ]
 
